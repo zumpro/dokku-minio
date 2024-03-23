@@ -2,7 +2,7 @@
 
 [![Minio](https://img.shields.io/badge/Minio-15/03/2024-blue.svg)](https://github.com/minio/minio/releases/tag/RELEASE.2024-03-15T01-07-19Z)
 [![Dokku](https://img.shields.io/badge/Dokku-Repo-blue.svg)](https://github.com/dokku/dokku)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/d1ceward/minio_on_dokku/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/zumpro/dokku-minio/graphs/commit-activity)
 # Run Minio on Dokku
 
 ## Perquisites
@@ -76,13 +76,13 @@ Begin by cloning this repository onto your local machine.
 #### Via SSH
 
 ```bash
-git clone git@github.com:d1ceward/minio_on_dokku.git
+git clone git@github.com:zumpro/dokku-minio.git
 ```
 
 #### Via HTTPS
 
 ```bash
-git clone https://github.com/d1ceward/minio_on_dokku.git
+git clone https://github.com/zumpro/dokku-minio.git
 ```
 
 ### Set up git remote
