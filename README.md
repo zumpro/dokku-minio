@@ -3,91 +3,92 @@
 [![Minio](https://img.shields.io/badge/Minio-15/03/2024-blue.svg)](https://github.com/minio/minio/releases/tag/RELEASE.2024-03-15T01-07-19Z)
 [![Dokku](https://img.shields.io/badge/Dokku-Repo-blue.svg)](https://github.com/dokku/dokku)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/zumpro/dokku-minio/graphs/commit-activity)
-# Run Minio on Dokku
 
-## Perquisites
+# Запуск Minio на Dokku
 
-### What is Minio?
+## Привилегии
 
-Minio is an object storage server that is API compatible with the Amazon S3 cloud storage service. You can find more information about Minio on the [minio.io](https://www.minio.io/) website.
+### Что такое Mini?
 
-### What is Dokku?
+Minion - это сервер хранения объектов, совместимый по API с облачным сервисом хранения Amazon S3. Вы можете найти более подробную информацию о Minion на [minio.io](https://www.minio.io/) website.
 
-[Dokku](http://dokku.viewdocs.io/dokku/) is a lightweight implementation of a Platform as a Service (PaaS) that is powered by Docker. It can be thought of as a mini-Heroku.
+### Что такое Докку?
 
-### Requirements
+[Dokku](http://dokku.viewdocs.io/dokku/) - это облегченная реализация платформы как сервиса (PaaS), работающая на базе Docker. Ее можно рассматривать как мини-Heroku.
+
+### Требования
 * A working [Dokku host](http://dokku.viewdocs.io/dokku/getting-started/installation/)
 * [Letsencrypt](https://github.com/dokku/dokku-letsencrypt) plugin for SSL (optionnal)
 
-# Setup
+# Настройка
 
-**Note:** Throughout this guide, we will use the domain `minio.example.com` for demonstration purposes. Make sure to replace it with your actual domain name.
+**Примечание:** На протяжении всего этого руководства мы будем использовать домен `minio.example.com` в демонстрационных целях. Обязательно замените его вашим фактическим доменным именем.
 
-## Create the app
+## Создайте приложение
 
-Log into your Dokku host and create the Minio app:
+Войдите на свой хостинг Dokku и создайте приложение Minion:
 
 ```bash
 dokku apps:create minio
 ```
 
-## Configuration
+## Конфигурация
 
-### Setting root user
+### Настройка пользователя root
 
-Minio uses a username/password combination (`MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`) for authentication and object management. Set these environment variables using the following commands:
+Mini использует комбинацию имени пользователя и пароля (`MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`) для аутентификацию и управление объектами. Установите эти переменные среды с помощью следующих команд:
 
 ```bash
 dokku config:set minio MINIO_ROOT_USER=<username>
 dokku config:set minio MINIO_ROOT_PASSWORD=<password>
 ```
 
-### Increase the upload size limit
+### Увеличьте ограничение на размер загружаемого файла
 
-To modify the upload limit, you need to adjust the `CLIENT_MAX_BODY_SIZE` environment variable used by Dokku. In this example, we set it to a maximum value of 10MB:
+Чтобы изменить лимит загрузки, вам необходимо настроить переменную окружения `CLIENT_MAX_BODY_SIZE`, используемую Dokku. В этом примере мы установили для нее максимальное значение в 10 МБ:
 
 ```bash
 dokku config:set minio CLIENT_MAX_BODY_SIZE=10M
 ```
 
-## Persistent storage
+## Постоянное хранилище
 
-To ensure that uploaded data persists between restarts, we create a folder on the host machine, grant write permissions to the user defined in the Dockerfile, and instruct Dokku to mount it to the app container. Follow these steps:
+Чтобы гарантировать, что загруженные данные сохраняются между перезапусками, мы создаем папку на хост-компьютере, предоставляем права на запись пользователю, определенному в Dockerfile, и инструктируем Dokku подключить ее к контейнеру приложения. Выполните следующие действия:
 
 ```bash
 dokku storage:ensure-directory minio --chown false
 dokku storage:mount minio /var/lib/dokku/data/storage/minio:/data
 ```
 
-## Domain setup
+## Настройка домена
 
-To enable routing for the Minio app, we need to configure the domain. Execute the following command:
+Чтобы включить маршрутизацию для приложения Minio, нам необходимо настроить домен. Выполните следующую команду:
 
 ```bash
 dokku domains:set minio minio.example.com
 ```
 
-## Push Minio to Dokku
+## Переместите Minio в Dokku
 
-### Grabbing the repository
+### Захватите репозиторий
 
-Begin by cloning this repository onto your local machine.
+Начните с клонирования этого репозитория на свой локальный компьютер.
 
-#### Via SSH
+#### Через SSH
 
 ```bash
 git clone git@github.com:zumpro/dokku-minio.git
 ```
 
-#### Via HTTPS
+#### Через HTTPS
 
 ```bash
 git clone https://github.com/zumpro/dokku-minio.git
 ```
 
-### Set up git remote
+### Настройка git remote
 
-Now, set up your Dokku server as a remote repository.
+Теперь настройте свой сервер Dokku в качестве удаленного хранилища.
 
 ```bash
 git remote add dokku dokku@example.com:minio
@@ -95,15 +96,15 @@ git remote add dokku dokku@example.com:minio
 
 ### Push Minio
 
-Now, you can push the Minio app to Dokku. Ensure you have completed this step before moving on to the [next section](#ssl-certificate).
+Теперь вы можете загрузить приложение Minion в Dokku. Убедитесь, что вы выполнили этот шаг, прежде чем переходить к [next section](#ssl-certificate).
 
 ```bash
 git push dokku master
 ```
 
-## SSL certificate
+## SSL-сертификат
 
-Lastly, let's obtain an SSL certificate from [Let's Encrypt](https://letsencrypt.org/).
+Наконец, давайте получим SSL-сертификат от [Let's Encrypt](https://letsencrypt.org/).
 
 ```bash
 # Install letsencrypt plugin
@@ -116,13 +117,13 @@ dokku letsencrypt:set minio email you@example.com
 dokku letsencrypt:enable minio
 ```
 
-## Wrapping up
+## Подведение итогов
 
-Congratulations! Your Minio instance is now up and running, and you can access it at [https://minio.example.com](https://minio.example.com).
+Поздравляю! Ваш экземпляр Minion теперь запущен, и вы можете получить к нему доступ по адресу [https://minio.example.com](https://minio.example.com).
 
-### Minio web console
+## Мини-веб-консоль
 
-To access the Minio web console and manage your files, you need to configure the necessary proxy settings. The following commands will help you set it up:
+Чтобы получить доступ к веб-консоли Minio и управлять своими файлами, вам необходимо настроить необходимые параметры прокси-сервера. Следующие команды помогут вам настроить его:
 
 ```bash
 # If ssl enabled
@@ -132,13 +133,13 @@ dokku proxy:ports-add minio https:<desired_port>:9001
 dokku proxy:ports-add minio http:<desired_port>:9001
 ```
 
-Replace `<desired_port>` with the port number you prefer. By default, Minio uses port `9001`.
+Замените `<желаемый порт>` на номер порта, который вы предпочитаете. По умолчанию Minio использует порт `9001`.
 
-After setting up the proxy, you can access the Minio web console by visiting [https://minio.example.com:9001](https://minio.example.com:9001) in your web browser.
+После настройки прокси-сервера вы можете получить доступ к веб-консоли Minion, посетив [https://minio.example.com:9001](https://minio.example.com:9001) в вашем веб-браузере.
 
-### Web console share links issue
+### Проблема с общими ссылками веб-консоли
 
-To resolve an issue with share links generated by the console pointing to the Docker container IP instead of your Minio instance, you can use the following command:
+Чтобы устранить проблему со ссылками общего доступа, сгенерированными консолью, указывающими на IP-адрес контейнера Docker вместо вашего экземпляра Minion, вы можете использовать следующую команду:
 
 ```bash
 dokku config:set minio \
@@ -146,6 +147,6 @@ dokku config:set minio \
   MINIO_BROWSER_REDIRECT_URL=https://minio.example.com:9001
 ```
 
-This command sets the appropriate environment variables to ensure that share links correctly point to your Minio instance at https://minio.example.com and utilize the configured port.
+Эта команда устанавливает соответствующие переменные среды, чтобы гарантировать, что ссылки общего доступа правильно указывают на ваш экземпляр Minion по адресу https://minio.example.com и используют настроенный порт.
 
-Now you're all set to use Minio and leverage its powerful features for your storage needs. Happy file management!
+Теперь вы готовы использовать Minion и использовать его мощные функции для ваших нужд хранения. Счастливого управления файлами!
