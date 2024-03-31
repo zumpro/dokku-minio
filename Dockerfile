@@ -19,4 +19,4 @@ ENV MINIO_ACCESS_KEY_FILE=access_key \
 EXPOSE 9000 9001
 
 # Команда для запуска MinIO по умолчанию
-CMD ["server", "--address", ":9000", "/data"]
+CMD ["server", "--address", ":9000", "--console-address", ":9001", "/data"]
