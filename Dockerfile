@@ -1,8 +1,6 @@
 # Используем официальный образ MinIO
 FROM minio/minio:latest
 
-# Создаем каталог данных для пользователя, где будем хранить данные
-RUN mkdir -p /home/dokku/data
 
 # Добавляем метаданные к образу
 LABEL name="MinIO" \
