@@ -1,12 +1,6 @@
 # Используем официальный образ MinIO
 FROM minio/minio:latest
 
-# Добавляем пользователя dokku с индивидуальным UID
-RUN adduser -u 32769 -m -U dokku
-
-# Переключаемся на пользователя dokku
-USER dokku
-
 # Создаем каталог данных для пользователя, где будем хранить данные
 RUN mkdir -p /home/dokku/data
 
